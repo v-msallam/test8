@@ -1,0 +1,144 @@
+table Sales
+	lineageTag: 902182cd-4e4b-4c08-a6e3-439c2264b30e
+
+	measure Profit = SUM(Sales[Sales]) - SUM(Sales[Cost])
+		lineageTag: 55ac1117-297b-4498-8a76-46e25452e234
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Profitability = DIVIDE([Profit], SUM([Sales]))
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a9ef1603-f2b1-468b-b9f3-d42ae31f07ae
+
+		annotation PBI_ChangedProperties = ["FormatString"]
+
+	column OrderNumber
+		dataType: string
+		isNullable: false
+		sourceProviderType: nchar
+		lineageTag: 4270b046-2248-4f9d-863d-931d7188332b
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDate
+		dataType: dateTime
+		isNullable: false
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 3ac17a93-1825-491c-a7af-2fdb7cc66d78
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ShipDate
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 1ea32b6a-2630-4541-8600-bdcb6378a5e0
+		summarizeBy: none
+		sourceColumn: ShipDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CustomerStateID
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 74d8fd67-8092-49c8-b12c-404f091d9091
+		summarizeBy: none
+		sourceColumn: CustomerStateID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a1367f94-09f7-4412-a08b-58e103994ac8
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4186e81b-0f87-40a8-91c5-e5546dc0e515
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitPrice
+		dataType: double
+		isNullable: false
+		sourceProviderType: decimal(9, 2)
+		lineageTag: 800358e2-c3bb-4b0a-8451-ecd567cb1929
+		summarizeBy: sum
+		sourceColumn: UnitPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DiscountAmount
+		dataType: double
+		isNullable: false
+		sourceProviderType: decimal(9, 2)
+		lineageTag: daed0735-ebea-4514-8c63-6c425379fe83
+		summarizeBy: sum
+		sourceColumn: DiscountAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PromotionCode
+		dataType: string
+		sourceProviderType: nvarchar(20)
+		lineageTag: 3b3195a2-be41-4ea6-bcc2-4443d21a5647
+		summarizeBy: none
+		sourceColumn: PromotionCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales = Sales[Quantity] * RELATED('Product'[RetailPrice])
+		lineageTag: 6d6161d6-9723-48c7-8624-05c6cf1d60cb
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Cost = ```
+			Sales[Quantity] * Sales[UnitPrice] 
+			```
+		lineageTag: 8773fe55-1841-4b63-bf96-1bfddba3c59d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Sales-6caeaad6-67c4-4f77-b1dc-bed618c69398 = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("localhost", "tailspintoys-us"),
+				    dbo_Sales = Source{[Schema="dbo",Item="Sales"]}[Data]
+				in
+				    dbo_Sales
+
+	annotation PBI_ResultType = Table
+

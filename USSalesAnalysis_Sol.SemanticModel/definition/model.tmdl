@@ -1,0 +1,23 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Product","Region","Sales","State","US Population"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.110.341.0 (22.10)
+
+ref table Product
+ref table Region
+ref table Sales
+ref table State
+ref table 'US Population'
+ref table DateTableTemplate_677c2e49-143b-494f-9c1c-c01a566f75e0
+
+ref cultureInfo en-US
+

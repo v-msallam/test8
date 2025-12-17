@@ -1,0 +1,37 @@
+table 'US Population'
+	lineageTag: b6a7b518-d814-4a93-867d-47090f3c4dde
+
+	column State
+		dataType: string
+		lineageTag: 33d90bfb-e79b-409b-8e10-8b3eb2527c09
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column Population
+		dataType: int64
+		formatString: 0
+		lineageTag: 00a57ec7-6061-416c-9c18-e4a4db8c4fde
+		summarizeBy: sum
+		sourceColumn: Population
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_ChangedProperties = ["DataType"]
+
+	partition 'US Population-77caced6-1c6c-47a9-86d3-718169073d81' = m
+		mode: import
+		source =
+				let
+				    Source = Web.BrowserContents("https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_population"),
+				    #"Extracted Table From Html" = Html.Table(Source, {{"State", "TD + TH"}, {"Population", "TD:nth-last-child(13)"}}, [RowSelector="TD + TH"]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Extracted Table From Html",{{"State", type text}, {"Population", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Population] <> "N/A"))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,35 @@
+table Region
+	lineageTag: 129dc45d-bd5f-4378-96c0-917e4bd614e8
+
+	column RegionID
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bdc0fe92-9421-454d-95ce-e092386e5f9e
+		summarizeBy: none
+		sourceColumn: RegionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: a5cb6d5f-aca7-4073-86ef-829bfd532f78
+		summarizeBy: none
+		sourceColumn: RegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Region-b2d6c93c-2b77-4e59-9b1c-fdb097e19f05 = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("localhost", "tailspintoys-us"),
+				    dbo_Region = Source{[Schema="dbo",Item="Region"]}[Data]
+				in
+				    dbo_Region
+
+	annotation PBI_ResultType = Table
+
