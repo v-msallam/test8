@@ -1,0 +1,109 @@
+table Product
+	lineageTag: 295ba50f-53c3-4ff3-85b2-1118bce2fe7e
+
+	column ProductID
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 7565db30-bf98-47a8-8886-c8cee0772320
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductSKU
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: 88461328-c973-4855-b1c3-b0b8df546c2c
+		summarizeBy: none
+		sourceColumn: ProductSKU
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: 667aa4db-ac83-4036-bec2-01b9adc3293a
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductCategory
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: d90ed978-931b-4c4c-ae6c-7c202f3efecf
+		summarizeBy: none
+		sourceColumn: ProductCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemGroup
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: c5cd0ace-6c80-45f1-b3a8-fe8a0bb20e85
+		summarizeBy: none
+		sourceColumn: ItemGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column KitType
+		dataType: string
+		isNullable: false
+		sourceProviderType: nchar
+		lineageTag: d439f9bb-ca46-4182-b4c1-e0b526aee596
+		summarizeBy: none
+		sourceColumn: KitType
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channels
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: tinyint
+		lineageTag: bda26751-3fd5-491e-bd90-508c75d3a96e
+		summarizeBy: none
+		sourceColumn: Channels
+
+		annotation SummarizationSetBy = Automatic
+
+	column Demographic
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: ec5d52f0-01e4-40ea-a462-54de16f1a2f7
+		summarizeBy: none
+		sourceColumn: Demographic
+
+		annotation SummarizationSetBy = Automatic
+
+	column RetailPrice
+		dataType: decimal
+		isNullable: false
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: money
+		lineageTag: 3b09e235-a32f-4d42-bbc2-39607564d43e
+		summarizeBy: none
+		sourceColumn: RetailPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	partition Product-4c8acb54-90ec-49c6-a747-0b341574be79 = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("localhost", "tailspintoys-us"),
+				    dbo_Product = Source{[Schema="dbo",Item="Product"]}[Data]
+				in
+				    dbo_Product
+
+	annotation PBI_ResultType = Table
+

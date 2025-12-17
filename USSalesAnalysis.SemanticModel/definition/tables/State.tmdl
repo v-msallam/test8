@@ -1,0 +1,55 @@
+table State
+	lineageTag: 58f8cefc-e3d7-4f25-ac22-b897df1c2e43
+
+	column StateID
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5ac4a828-a2fd-4d17-8259-c85ec4d15d5c
+		summarizeBy: none
+		sourceColumn: StateID
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(2)
+		lineageTag: c8f157f6-e10a-46ad-85b7-2e81b9b8adb2
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateName
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(50)
+		lineageTag: b234697f-4a4a-46f1-a783-2ff298c5e5e0
+		summarizeBy: none
+		sourceColumn: StateName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionID
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 22db1feb-d606-47c2-bdb0-58eb1dcb3322
+		summarizeBy: none
+		sourceColumn: RegionID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition State-1cd8d87c-87d3-4332-a439-311a46db5a60 = m
+		mode: directQuery
+		source =
+				let
+				    Source = Sql.Database("localhost", "tailspintoys-us"),
+				    dbo_State = Source{[Schema="dbo",Item="State"]}[Data]
+				in
+				    dbo_State
+
+	annotation PBI_ResultType = Table
+

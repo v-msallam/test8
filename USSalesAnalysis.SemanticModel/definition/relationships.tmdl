@@ -1,0 +1,18 @@
+relationship a8e41142-5802-478f-b16f-0e352aa4ae6e
+	fromColumn: Sales.ProductID
+	toColumn: Product.ProductID
+
+	annotation PBI_IsFromSource = FS
+
+relationship 4c0e6ab2-eee7-4e0b-9e61-0e43f22b2093
+	fromColumn: Sales.CustomerStateID
+	toColumn: State.StateID
+
+	annotation PBI_IsFromSource = FS
+
+relationship eb77cda5-db24-4ea6-aeda-eb48ce5575c3
+	fromColumn: State.RegionID
+	toColumn: Region.RegionID
+
+	annotation PBI_IsFromSource = FS
+
